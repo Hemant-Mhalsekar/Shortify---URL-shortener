@@ -5,10 +5,10 @@ import com.javadev.shortify.dto.ShortenResponse;
 import com.javadev.shortify.model.Url;
 import com.javadev.shortify.repository.UrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -17,13 +17,19 @@ public class UrlService {
     @Autowired
     private UrlRepository urlRepository;
 
-    private static final String BASE_URL = "http://localhost:8080/";
+    @Value("${app.base-url}")
+    private String BASE_URL;
+
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public ShortenResponse shortenUrl(ShortenRequest request) {
+
+        if (!isValidUrl(request.getUrl())) {
+            throw new RuntimeException("Invalid URL. Must start with http:// or https://");
+        }
+
         String shortCode;
 
-        // Use custom alias if provided, else generate one
         if (request.getCustomAlias() != null && !request.getCustomAlias().isBlank()) {
             shortCode = request.getCustomAlias();
             if (urlRepository.existsByShortCode(shortCode)) {
@@ -79,13 +85,21 @@ public class UrlService {
         return response;
     }
 
+    private boolean isValidUrl(String url) {
+        try {
+            new java.net.URL(url).toURI();
+            return url.startsWith("http://") || url.startsWith("https://");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private String generateCode() {
         Random random = new Random();
         StringBuilder code = new StringBuilder();
         for (int i = 0; i < 6; i++) {
             code.append(CHARS.charAt(random.nextInt(CHARS.length())));
         }
-        // Regenerate if collision
         if (urlRepository.existsByShortCode(code.toString())) {
             return generateCode();
         }
