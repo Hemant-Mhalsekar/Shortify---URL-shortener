@@ -8,17 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
+import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173") // React dev server
+@CrossOrigin(origins = "http://localhost:5173")
 public class UrlController {
 
     @Autowired
     private UrlService urlService;
 
     @PostMapping("/api/shorten")
-    public ResponseEntity<ShortenResponse> shorten(@RequestBody ShortenRequest request) {
-        ShortenResponse response = urlService.shortenUrl(request);
+    public ResponseEntity<ShortenResponse> shorten(@RequestBody ShortenRequest request,
+                                                   Principal principal) {
+        ShortenResponse response = urlService.shortenUrl(request, principal.getName());
         return ResponseEntity.ok(response);
     }
 
@@ -33,9 +36,15 @@ public class UrlController {
         return ResponseEntity.ok(urlService.getStats(shortCode));
     }
 
+    @GetMapping("/api/dashboard")
+    public ResponseEntity<List<ShortenResponse>> dashboard(Principal principal) {
+        return ResponseEntity.ok(urlService.getDashboard(principal.getName()));
+    }
+
     @DeleteMapping("/api/link/{shortCode}")
-    public ResponseEntity<Void> deleteLink(@PathVariable String shortCode) {
-        urlService.deleteUrl(shortCode);
+    public ResponseEntity<Void> deleteLink(@PathVariable String shortCode,
+                                           Principal principal) {
+        urlService.deleteUrl(shortCode, principal.getName());
         return ResponseEntity.noContent().build();
     }
 }
