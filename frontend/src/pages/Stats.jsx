@@ -108,6 +108,18 @@ export default function Stats() {
           </div>
         )}
 
+        {!stats && !error && (
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className={`rounded-xl p-6 animate-pulse ${dark ? 'bg-white/5' : 'bg-black/5'}`}
+                style={{ height: i === 1 ? '120px' : '80px' }}
+              />
+            ))}
+          </div>
+        )}
+
         {stats && (
           <div className="space-y-4">
 
