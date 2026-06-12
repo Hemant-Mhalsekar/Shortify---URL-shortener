@@ -81,6 +81,8 @@ public class UrlService {
         response.setShortCode(shortCode);
         response.setLongUrl(url.getLongUrl());
         response.setClicks(url.getClicks());
+        response.setCreatedAt(url.getCreatedAt());
+        response.setExpiryDate(url.getExpiryDate());
 
         return response;
     }
