@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+
 @Service
 public class UrlService {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UrlService.class);
 
     @Autowired
     private UrlRepository urlRepository;
@@ -55,6 +58,9 @@ public class UrlService {
         response.setLongUrl(request.getUrl());
         response.setClicks(0L);
 
+        log.info("Short URL created: {} -> {}", shortCode, request.getUrl());
+
+
         return response;
     }
 
@@ -68,6 +74,8 @@ public class UrlService {
 
         url.setClicks(url.getClicks() + 1);
         urlRepository.save(url);
+
+        log.info("Redirect: /{} -> {} | Total clicks: {}", shortCode, url.getLongUrl(), url.getClicks());
 
         return url.getLongUrl();
     }
@@ -106,5 +114,12 @@ public class UrlService {
             return generateCode();
         }
         return code.toString();
+    }
+
+    public void deleteUrl(String shortCode) {
+        Url url = urlRepository.findByShortCode(shortCode)
+                .orElseThrow(() -> new RuntimeException("Short link not found."));
+        urlRepository.delete(url);
+        log.info("Deleted short URL: {}", shortCode);
     }
 }
