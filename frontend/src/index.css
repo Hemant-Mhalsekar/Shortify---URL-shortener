@@ -1,3 +1,106 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --accent: #00d4ff;
+  --violet: #7c3aed;
+  --accent-glow: rgba(0, 212, 255, 0.15);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Light mode */
+.light {
+  background-color: #fafafa;
+  color: #0a0a0a;
+}
+
+/* Dark mode */
+.dark {
+  background-color: #0a0a0a;
+  color: #fafafa;
+}
+
+/* Cyan underline animation on input focus */
+.input-animated {
+  position: relative;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.input-animated:focus {
+  outline: none;
+  border-color: #00d4ff;
+}
+
+/* Typing animation */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.typing-effect {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 0.6s steps(30) forwards;
+}
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards; }
+.fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
+.fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards; }
+
+/* Glow pulse for active badge */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(0, 212, 255, 0.4); }
+  50% { box-shadow: 0 0 14px rgba(0, 212, 255, 0.8); }
+}
+
+.glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Button charge effect */
+@keyframes charge {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.btn-charge {
+  background: linear-gradient(90deg, #7c3aed, #00d4ff, #7c3aed);
+  background-size: 200% auto;
+  animation: charge 1.5s linear infinite;
+}
