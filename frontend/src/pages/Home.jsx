@@ -29,6 +29,15 @@ export default function Home() {
 
   const handleSubmit = async () => {
     if (!url) return setError('Please enter a URL.')
+
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return setError('URL must start with http:// or https://')
+    }
+
+    if (expiryDays && (parseInt(expiryDays) < 1 || parseInt(expiryDays) > 365)) {
+      return setError('Expiry must be between 1 and 365 days.')
+    }
+
     setError('')
     setLoading(true)
     setResult(null)
@@ -71,7 +80,7 @@ export default function Home() {
           Fast. Simple. Free.
         </div>
 
-        <h1 className="font-display font-bold text-5xl md:text-6xl leading-tight mb-4 fade-up fade-up-delay-1">
+        <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-tight mb-4 fade-up fade-up-delay-1">
           Long URLs.{' '}
           <span style={{
             background: 'linear-gradient(90deg, #00d4ff, #7c3aed)',
@@ -103,7 +112,7 @@ export default function Home() {
           </div>
 
           {/* Optional fields row */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
             <div className="flex items-center gap-2">
               <Tag size={15} className={dark ? 'text-white/30' : 'text-black/30'} />
               <input
@@ -189,7 +198,7 @@ export default function Home() {
 
       {/* Features section */}
       <div className="max-w-3xl mx-auto px-6 pb-20">
-        <div className="grid grid-cols-3 gap-4 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           {[
             { icon: <Zap size={18} color="#00d4ff" />, title: 'Instant', desc: 'Links generated in milliseconds' },
             { icon: <SlidersHorizontal size={18} color="#00d4ff" />, title: 'Custom Alias', desc: 'Make your links memorable' },
