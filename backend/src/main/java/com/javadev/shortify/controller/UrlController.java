@@ -32,4 +32,10 @@ public class UrlController {
     public ResponseEntity<ShortenResponse> getStats(@PathVariable String shortCode) {
         return ResponseEntity.ok(urlService.getStats(shortCode));
     }
+
+    @DeleteMapping("/api/link/{shortCode}")
+    public ResponseEntity<Void> deleteLink(@PathVariable String shortCode) {
+        urlService.deleteUrl(shortCode);
+        return ResponseEntity.noContent().build();
+    }
 }
