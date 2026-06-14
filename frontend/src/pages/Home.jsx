@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../api/axios'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { Link2, Zap, Copy, Check, ArrowRight, Clock, Tag, SlidersHorizontal, BarChart2 } from 'lucide-react'
@@ -43,7 +43,7 @@ export default function Home() {
     setResult(null)
 
     try {
-      const response = await axios.post('http://localhost:8080/api/shorten', {
+      const response = await api.post('/api/shorten', {
         url,
         customAlias: customAlias || null,
         expiryDays: expiryDays ? parseInt(expiryDays) : null,

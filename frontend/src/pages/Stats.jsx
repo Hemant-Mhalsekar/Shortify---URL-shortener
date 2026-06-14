@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api/axios'
 import { useTheme } from '../context/ThemeContext'
 import {
   ArrowLeft,
@@ -39,8 +39,8 @@ export default function Stats() {
   }
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/stats/${shortCode}`)
+    api
+    .get(`/api/stats/${shortCode}`)
       .then((res) => {
         setStats(res.data)
         animateCount(res.data.clicks)
